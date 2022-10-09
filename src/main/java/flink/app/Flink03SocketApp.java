@@ -20,7 +20,10 @@ public class Flink03SocketApp {
         // 启动携带WebUI
         StreamExecutionEnvironment env = StreamExecutionEnvironment.createLocalEnvironmentWithWebUI(new Configuration());
 
+        env.setParallelism(1);
+
         DataStream<String> stringDS = env.socketTextStream("127.0.0.1", 8888);
+
         stringDS.print("开始处理");
         // FlatMapFunction<String, String>, key是输入类型，value是Collector响应的收集的类型，看源码注释，也是 DataStream<String>里面泛型类型
         DataStream<String> dataStream = stringDS.flatMap(new FlatMapFunction<String, String>() {
@@ -31,8 +34,8 @@ public class Flink03SocketApp {
                     out.collect(val);
                 }
             }
-        });
-        dataStream.print("结果");
+        }).setParallelism(1);
+        dataStream.print("结果").setParallelism(1);
         //DataStream需要调用execute,可以取个名称
         env.execute("data stream job");
     }
