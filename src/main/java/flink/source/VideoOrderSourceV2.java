@@ -62,7 +62,7 @@ public class VideoOrderSourceV2 extends RichParallelSourceFunction<VideoOrder> {
             videoOrder.setUserId(userId);
             videoOrder.setCreateTime(new Date());
             videoOrder.setTradeNo(id);
-
+            System.out.println("产⽣:"+videoOrder.getTitle()+"，价 格:"+videoOrder.getMoney()+", 时间:"+videoOrder.getCreateTime());
             ctx.collect(videoOrder);
         }
 
